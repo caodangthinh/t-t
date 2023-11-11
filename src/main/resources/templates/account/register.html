@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" type="image/png" href="/assets/img/favcion.png"/>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" type="text/css" href="/assets/css/bootstrap.min.css" media="all"/>
+  <!-- Slick nav CSS -->
+  <link rel="stylesheet" type="text/css" href="/assets/css/slicknav.min.css" media="all"/>
+  <!-- Iconfont CSS -->
+  <link rel="stylesheet" type="text/css" href="/assets/css/icofont.css" media="all"/>
+  <!-- Owl carousel CSS -->
+  <link rel="stylesheet" type="text/css" href="/assets/css/owl.carousel.css">
+  <!-- Popup CSS -->
+  <link rel="stylesheet" type="text/css" href="/assets/css/magnific-popup.css">
+  <!-- Main style CSS -->
+  <!-- Responsive CSS -->
+  <link rel="stylesheet" type="text/css" href="/assets/css/responsive.css" media="all"/>
+  <link rel="stylesheet" href="/assets/css/register.css"/>
+</head>
+<body class="registerbody">
+<form th:action="@{/account/register}" th:object="${user}" method="post" class="registerwrapper">
+  <div class="registerform registersignup">
+    <h1>SIGN UP</h1>
+    <input type="text" th:field="*{Email}" placeholder="Email address" class="input" required>
+    <input type="text" th:field="*{fullName}" placeholder="Full name" class="input" required>
+    <input type="text" th:field="*{username}" placeholder="Username" class="input" required>
+    <input type="password" th:field="*{Password}" placeholder="Password" class="input" required>
+    <input type="password" placeholder="Confirm Password" class="input" required>
+    <div class="checkbox">
+      <input type="checkbox" id="signupCheck"/>
+      <label for="signupCheck">I accept all terms & conditions</label>
+    </div>
+    <input type="submit" value="Register" class="registerbtnSubmit"/>
+
+  </div>
+</form>
+</body>
+</html>

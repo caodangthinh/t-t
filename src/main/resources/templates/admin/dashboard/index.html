@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head th:replace="layoutAdmin :: layout-head">
+</head>
+<body>
+<div class="container-scroller">
+    <th:block th:replace="~{layoutAdmin :: sidebar}"></th:block>
+    <div class="container-fluid page-body-wrapper">
+        <th:block th:replace="~{layoutAdmin :: menubar}"></th:block>
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <!--                    <div th:insert="~{::{content}}"></div>-->
+                <div class="page-header">
+                    <h4 class="page-title"> Dashboard </h4>
+                </div>
+
+                <div class="row">
+                    <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-8 col-sm-12 col-xl-8 my-auto">
+                                        <h6 class="mb-0 text-muted font-weight-normal">REVENUE</h6>
+                                        <div class="d-flex d-sm-block d-md-flex align-items-center">
+                                            <h2 class="mb-0" th:text="'$'+${revenue}"></h2>
+                                        </div>
+                                    </div>
+                                    <div class="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
+                                        <i class="icon-lg mdi mdi-cash-usd text-success ml-auto"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-8 col-sm-12 col-xl-8 my-auto">
+                                        <h6 class="mb-0 text-muted font-weight-normal">MOVIES</h6>
+                                        <div class="d-flex d-sm-block d-md-flex align-items-center">
+                                            <h2 class="mb-0" th:text="${movies}"></h2>
+                                        </div>
+                                    </div>
+                                    <div class="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
+                                        <i class="icon-lg mdi mdi-filmstrip text-primary ml-auto"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-8 col-sm-12 col-xl-8 my-auto">
+                                        <h6 class="mb-0 text-muted font-weight-normal">TICKETS SOLD</h6>
+                                        <div class="d-flex d-sm-block d-md-flex align-items-center">
+                                            <h2 class="mb-0" th:text="${reservation}"></h2>
+                                        </div>
+                                    </div>
+                                    <div class="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
+                                        <i class="icon-lg mdi mdi mdi-ticket text-danger ml-auto"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-8 col-sm-12 col-xl-8 my-auto">
+                                        <h6 class="mb-0 text-muted font-weight-normal">USERS</h6>
+                                        <div class="d-flex d-sm-block d-md-flex align-items-center">
+                                            <h2 class="mb-0" th:text="${users}"></h2>
+                                        </div>
+                                    </div>
+                                    <div class="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
+                                        <i class="icon-lg mdi mdi-account-multiple text-info ml-auto"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            <th:block th:replace="~{layoutAdmin :: footer}">
+            </th:block>
+        </div>
+    </div>
+    <th:block th:replace="~{layoutAdmin :: foot}"></th:block>
+</div>
+</body>
+</html>

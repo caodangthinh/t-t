@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head th:replace="layoutAdmin :: layout-head">
+</head>
+<body>
+<div class="container-scroller">
+    <th:block th:replace="~{layoutAdmin :: sidebar}"></th:block>
+    <div class="container-fluid page-body-wrapper">
+        <th:block th:replace="~{layoutAdmin :: menubar}"></th:block>
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <!--                    <div th:insert="~{::{content}}"></div>-->
+                <div class="page-header">
+                    <h4 class="page-title"> Add Cinema </h4>
+                </div>
+                <div class="col-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <form th:action="@{/admin/cinema/edit}" th:object="${cinema}" method="post"
+                                  class="forms-sample">
+                                <div class="form-group">
+                                    <label>Cinema's Id</label>
+                                    <input type="text" class="form-control text-light"
+                                           th:field="*{cinemaId}">
+                                </div>
+                                <div class="form-group">
+                                    <label>Cinema's Name</label>
+                                    <input type="text" class="form-control text-light" id="CinemaName"
+                                           th:field="*{cinemaName}" placeholder="Cinema's Name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="description">Description</label>
+                                    <textarea th:field="*{Description}" class="form-control text-light" id="description"
+                                              placeholder="Description" rows="4"></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary mr-2">Save</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <a class="btn btn-primary  mr-2" href="/admin/cinema"><i class="mdi mdi-arrow-left"></i>Back</a>
+
+            </div>
+            <th:block th:replace="~{layoutAdmin :: footer}">
+                <p>&copy;footer</p>
+            </th:block>
+        </div>
+    </div>
+    <th:block th:replace="~{layoutAdmin :: foot}"></th:block>
+</div>
+</body>
+</html>

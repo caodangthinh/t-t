@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head th:replace="layoutAdmin :: layout-head">
+</head>
+<body>
+<div class="container-scroller">
+    <th:block th:replace="~{layoutAdmin :: sidebar}"></th:block>
+    <div class="container-fluid page-body-wrapper">
+        <th:block th:replace="~{layoutAdmin :: menubar}"></th:block>
+        <div class="main-panel">
+            <div class="content-wrapper">
+                <!--                    <div th:insert="~{::{content}}"></div>-->
+                <div class="page-header">
+                    <h4 class="page-title"> Add Shows </h4>
+                </div>
+                <div class="col-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <form th:action="@{/admin/shows/add}" th:object="${shows}" method="post"
+                                  class="forms-sample">
+                                <div class="form-group">
+                                    <label>Cinema's Name</label>
+                                    <select class="form-control text-light" id="cinema" name="cinema.cinemaId">
+                                        <option value="">-- Select Cinema --</option>
+                                        <option th:each="cinema : ${cinemas}" th:value="${cinema.cinemaId}"
+                                                th:text="${cinema.cinemaName}"></option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Movie's Name</label>
+                                    <select class="form-control text-light" id="movie" name="movie.movieId">
+                                        <option value="">-- Select Movie --</option>
+                                        <option th:each="movie : ${movies}" th:value="${movie.movieId}"
+                                                th:text="${movie.movieName}"></option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Day</label>
+                                    <select class="form-control text-light" id="day" name="showDay.showDayId">
+                                        <option value="">-- Select Day --</option>
+                                        <option th:each="showDay : ${showDays}" th:value="${showDay.showDayId}"
+                                                th:text="${showDay.Day}"></option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Time</label>
+                                    <select class="form-control text-light" id="time" name="showTime.showTimeId">
+                                        <option value="">-- Select Time --</option>
+                                        <option th:each="showTime : ${showTimes}" th:value="${showTime.showTimeId}"
+                                                th:text="${showTime.Time}"></option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-primary mr-2">Save</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <a class="btn btn-primary  mr-2" href="/admin/shows"><i class="mdi mdi-arrow-left"></i>Back</a>
+
+            </div>
+            <th:block th:replace="~{layoutAdmin :: footer}">
+            </th:block>
+        </div>
+    </div>
+    <th:block th:replace="~{layoutAdmin :: foot}"></th:block>
+</div>
+</body>
+</html>

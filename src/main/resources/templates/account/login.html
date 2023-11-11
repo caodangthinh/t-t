@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!--<title> Responsive Login and Signup Form </title>-->
+  <!-- CSS -->
+  <link rel="stylesheet" href="/assets/css/Login.css">
+  <!-- Boxicons CSS -->
+  <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+<section class="container forms">
+  <div class="form login">
+    <div class="form-content">
+      <header style="color: #eb315a">LOG IN</header>
+
+      <form th:action="@{/account/login}" method="post">
+
+        <div class="field input-field">
+          <input type="text" placeholder="username" class="input" id="username" name="username">
+        </div>
+        <div class="field input-field">
+          <input type="password" placeholder="Password" class="password" id="password" name="password">
+          <!--<i class='bx bx-hide eye-icon'></i>-->
+        </div>
+        <div class="form-link">
+          <a class="forgot-pass" href="/account/resetpassword" >Forgot password?</a>
+
+        </div>
+        <div class="field button-field">
+
+          <button type="submit">LOG IN</button>
+        </div>
+      </form>
+
+      <div class="field button-field">
+        <button><a style="color: #fff;" href="/account/register">SIGN UP</a></button>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+</body>
+</html>

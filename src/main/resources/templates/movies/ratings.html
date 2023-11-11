@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Star Rating Component</title>
+</head>
+<style>
+.rate:not(:checked) > input {
+    position:absolute;
+    top:-9999px;
+}
+.rate:not(:checked) > label {
+    float:right;
+    width:1em;
+    overflow:hidden;
+    white-space:nowrap;
+    cursor:pointer;
+    font-size:30px;
+    color:#ccc;
+}
+.rate:not(:checked) > label:before {
+    content: '★ ';
+}
+.rate > input:checked ~ label {
+    color: #ffc700;
+}
+.rate:not(:checked) > label:hover,
+.rate:not(:checked) > label:hover ~ label {
+    color: #deb217;
+}
+.rate > input:checked + label:hover,
+.rate > input:checked + label:hover ~ label,
+.rate > input:checked ~ label:hover,
+.rate > input:checked ~ label:hover ~ label,
+.rate > label:hover ~ input:checked ~ label {
+    color: #c59b08;
+}
+
+.rating {
+  display: inline-block;
+}
+
+.rating input {
+  display: none;
+}
+
+.rating label {
+  float: right;
+  cursor: pointer;
+  color: #ccc;
+}
+
+.rating label:before {
+  content: '\2605';
+  font-size: 24px;
+}
+
+.rating input:checked ~ label {
+  color: #ffcc00;
+}
+
+#star1:checked ~ form header:before{
+  content: "I just hate it ";
+}
+#star2:checked ~ form header:before{
+  content: "I don't like it ";
+}
+#star3:checked ~ form header:before{
+  content: "It is awesome ";
+}
+#star4:checked ~ form header:before{
+  content: "I just like it ";
+}
+#star5:checked ~ form header:before{
+  content: "I just love it ";
+}
+
+</style>
+<body>
+<h1>Star Rating Component</h1>
+
+<form id="ratingForm" action="/ratings" method="post">
+  <div class="rating">
+    <input type="radio" id="star5" name="value" value="5">
+    <label for="star5" onclick="submitRating(5)"></label>
+    <input type="radio" id="star4" name="value" value="4">
+    <label for="star4" onclick="submitRating(4)"></label>
+    <input type="radio" id="star3" name="value" value="3">
+    <label for="star3" onclick="submitRating(3)"></label>
+    <input type="radio" id="star2" name="value" value="2">
+    <label for="star2" onclick="submitRating(2)"></label>
+    <input type="radio" id="star1" name="value" value="1">
+    <label for="star1" onclick="submitRating(1)"></label>
+  </div>
+</form>
+
+<li th:each="rating : ${ratings}">
+  <span th:text="${rating.value}"></span> star(s)
+</li>
+
+<h2>Selected Rating:</h2>
+<div style="display: none;" id="selectedRating">No rating selected</div>
+
+<script>
+        function submitRating(value) {
+            document.getElementById('selectedRating').textContent = 'Selected Rating: ' + value + ' star(s)';
+
+            // Send the rating to the server using AJAX
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/ratings", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.send("value=" + value);
+        }
+    </script>
+
+
+
+<p>Total Reviews: <span th:text="${#lists.size(ratings)}"></span></p>
+</body>
+</html>
