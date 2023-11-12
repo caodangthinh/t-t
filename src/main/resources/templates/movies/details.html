@@ -105,11 +105,22 @@
 
 .rating label:before {
   content: '\2605';
-  font-size: 24px;
+  font-size: 25px;
 }
 
 .rating input:checked ~ label {
   color: #ffcc00;
+}
+.average-rating {
+    margin-right: 7px;
+    color: white;
+    padding: 4px;
+    display: inline-block;
+    background-color: #eb315a;
+    text-align: center;
+    line-height: 20px;
+    cursor: pointer;
+    border-radius: 4px;
 }
 
   </style>
@@ -235,6 +246,7 @@
                 </div>
                 <form action="@{/value/ratings}" method="post">
                   <div class="rating">
+                    <span class="average-rating" th:text="${averageRating}"></span>
                     <input type="radio" id="star10" name="value" value="10">
                     <label for="star10" onclick="submitRating(10)"></label>
                     <input type="radio" id="star9" name="value" value="9">
@@ -263,10 +275,9 @@
                 <div class="transformers-left" style="margin-left:5px;">
                   (<span id="totalReviewCount" th:text="${totalReviewCount}"></span> reviews)
                 </div>
-
-                <p>Average Rating: <span th:text="${averageRating}"></span></p>-->
                 <div style="display: none;"  id="selectedRating"></div>
               </li>
+
             </ul>
           </div>
         </div>
@@ -366,30 +377,9 @@
 <script src="/assets/js/isotope.pkgd.min.js"></script>
 <!-- main JS -->
 <script src="/assets/js/main.js"></script>
+
+<script src="/js/rating.js"></script>
 <script>
-function submitRating(value) {
-    // Check if the user has already submitted a rating
-    var hasRated = document.getElementById('selectedRating').textContent.trim() !== '';
-
-    if (!hasRated) {
-        var confirmation = confirm('Bạn có chắc đã đánh giá ' + value + ' sao cho bộ phim này?');
-
-        if (confirmation) {
-            document.getElementById('selectedRating').textContent = value + ' star(s)';
-
-            // Send the rating to the server using AJAX
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "/ratings", true);
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            xhr.send("value=" + value);
-
-            // Display an alert message after successful rating
-            alert('Đánh giá thành công!');
-        }
-    } else {
-        alert('Bạn đã đánh giá rồi!');
-    }
-}
 </script>
 
 </body>

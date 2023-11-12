@@ -11,19 +11,19 @@ import com.example.movie.Service.MovieService;
 import com.example.movie.Service.RatingService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
@@ -43,10 +43,10 @@ public class RatingController {
     private RatingService ratingService;
 
     @GetMapping("/ratings")
-    public String getAllRatings(Model model) {
-        List<Rating> ratings = ratingRepo.findAll();
-        double averageRating = ratingService.calculateAverageRating(ratings);
-        int totalReviewCount = ratingService.getTotalReviewCount(ratings);
+    public String getAllRatings(Model model, @PathVariable Long movieId) {
+        List<Rating> ratings = ratingRepo.getRatingByMovieId(movieId);
+        double averageRating = ratingService.calculateAverageRating(movieId);
+        int totalReviewCount = ratingService.getTotalReviewCount(movieId);
         model.addAttribute("ratings", ratings);
         model.addAttribute("totalReviewCount", totalReviewCount);
         model.addAttribute("averageRating", averageRating);
@@ -55,12 +55,11 @@ public class RatingController {
     }
 
     @PostMapping("/ratings")
-    public String addRating(HttpServletRequest request, @RequestParam("value") int value) {
+    public ResponseEntity<?> addRating(HttpServletRequest request, @RequestParam("value") int value) {
         String previousPageUrl = request.getHeader("Referer");
-
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userRepo.findByUsername(authentication.getName());
-        System.out.println("Received rating: " + value);
+
         try {
             URI uri = new URI(previousPageUrl);
             String path = uri.getPath();
@@ -68,7 +67,7 @@ public class RatingController {
             String movieIdStr = pathSegments[pathSegments.length - 1];
             long movieId = Long.parseLong(movieIdStr);
 
-            Rating existingRating = ratingRepo.findByUserAndMovieId(user, movieId);
+            Rating existingRating = ratingRepo.findByUserAndMovieId(user.getUserId(), movieId);
             if (existingRating == null) {
                 Movie movie = movieService.getMovieById(movieId);
                 Rating rating = new Rating();
@@ -76,16 +75,21 @@ public class RatingController {
                 rating.setValue(value);
                 rating.setMovie(movie);
                 ratingRepo.save(rating);
-                System.out.println("Rating saved: " + rating);
-                return "redirect:" + previousPageUrl;
+
+                // After saving the rating, calculate the updated totalReviewCount and averageRating
+                double updatedAverageRating = ratingService.calculateAverageRating(movieId);
+                int updatedTotalReviewCount = ratingService.getTotalReviewCount(movieId);
+
+                // Return a JSON response with the updated values
+                return ResponseEntity.ok(Map.of("totalReviewCount", updatedTotalReviewCount, "averageRating", updatedAverageRating));
             } else {
-                // Người dùng đã đánh giá bộ phim này trước đó, có thể xử lý thông báo hoặc thực hiện hành động khác tùy ý.
-                // Ví dụ: return "redirect:/ratings?error=You have already rated this movie.";
+                // User has already rated, return a bad request status
+                return ResponseEntity.badRequest().body("You have already rated this movie.");
             }
         } catch (URISyntaxException e) {
             e.printStackTrace();
+            return ResponseEntity.badRequest().body("Error processing the request.");
         }
-        return "redirect:" + previousPageUrl;
     }
 
 }

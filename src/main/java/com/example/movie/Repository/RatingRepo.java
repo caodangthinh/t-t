@@ -13,9 +13,6 @@ import java.util.List;
 
 public interface RatingRepo extends JpaRepository<Rating, Long> {
 
-    @Query(value = "SELECT * from rating where movie_id = ?1", nativeQuery = true)
-    List<Rating> getRatingByMovieId(Long movie_id);
-
     default List<Rating> getRatingByMovieId(Integer pageNo,
                                             Integer pageSize,
                                             String sortBy){
@@ -33,6 +30,17 @@ public interface RatingRepo extends JpaRepository<Rating, Long> {
             """)
     List<Rating> searchRating(String keyword);
 
-    @Query("SELECT r FROM Rating r WHERE r.user = :user AND r.movie.id = :movieId")
-    Rating findByUserAndMovieId(@Param("user") User user, @Param("movieId") Long movieId);
+    @Query(value = "SELECT * FROM rating WHERE movie_id = ?1", nativeQuery = true)
+    List<Rating> getRatingByMovieId(Long movie_id);
+
+    @Query("SELECT r FROM Rating r WHERE r.user.userId = :userId AND r.movie.movieId = :movieId")
+    Rating findByUserAndMovieId(@Param("userId") Long userId, @Param("movieId") Long movieId);
+
+    // Updated method to get the total review count for a specific movie
+    @Query(value = "SELECT COUNT(*) FROM rating WHERE movie_id = ?1", nativeQuery = true)
+    int getTotalReviewCountByMovieId(Long movie_id);
+
+    // Updated method to calculate the average rating for a specific movie
+    @Query(value = "SELECT AVG(value) FROM rating WHERE movie_id = ?1", nativeQuery = true)
+    Double getAverageRatingByMovieId(Long movie_id);
 }

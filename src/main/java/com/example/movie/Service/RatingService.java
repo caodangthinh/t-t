@@ -5,6 +5,7 @@ import com.example.movie.Repository.RatingRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.util.List;
 @Service
 public class RatingService {
@@ -16,17 +17,18 @@ public class RatingService {
         return ratingRepo.findAll();
     }
 
-    public double calculateAverageRating(List<Rating> ratings) {
-        if (ratings.isEmpty()) {
-            return 0.0; // Tránh chia cho 0 nếu không có đánh giá nào.
+    public double calculateAverageRating(Long movieId) {
+        Double averageRating = ratingRepo.getAverageRatingByMovieId(movieId);
+        if (averageRating != null) {
+            // Format the averageRating to display only one decimal place
+            DecimalFormat decimalFormat = new DecimalFormat("#.#");
+            return Double.parseDouble(decimalFormat.format(averageRating));
+        } else {
+            return 0.0;
         }
-
-        int totalRating = ratings.stream().mapToInt(Rating::getValue).sum();
-        return (double) totalRating / ratings.size();
     }
-    public int getTotalReviewCount(List<Rating> ratings) {
-
-        return ratings.size();
+    public int getTotalReviewCount(Long movieId) {
+        return ratingRepo.getTotalReviewCountByMovieId(movieId);
     }
 
 

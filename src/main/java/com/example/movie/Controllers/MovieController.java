@@ -33,7 +33,10 @@ public class MovieController {
     private CommentService commentService;
     @Autowired
     private CommentRepo commentRepo;
-
+    @Autowired
+    private RatingService ratingService;
+    @Autowired
+    private RatingRepo ratingRepo;
     @GetMapping
     public String movies(Model model,
                          @RequestParam(defaultValue = "0") Integer pageNo,
@@ -63,7 +66,9 @@ public class MovieController {
     }
 
     @GetMapping("/detail/{id}")
-    public String detail(@PathVariable("id") Long id, Model model){
+    public String detail(@PathVariable("id") Long id,
+                         Long movieId,
+                         Model model){
         Movie movie = movieService.getMovieById(id);
         model.addAttribute("movie", movie);
 
@@ -82,6 +87,12 @@ public class MovieController {
 
         List<Comment> comments = commentRepo.getCommentByMovieId(id);
         model.addAttribute("comments", comments);
+
+        List<Rating> ratings = ratingRepo.getRatingByMovieId(id);
+        double averageRating = ratingService.calculateAverageRating(id);
+        int totalReviewCount = ratingService.getTotalReviewCount(id);
+        model.addAttribute("totalReviewCount", totalReviewCount);
+        model.addAttribute("averageRating", averageRating);
 
         return "movies/details";
     }
